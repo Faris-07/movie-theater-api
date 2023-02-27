@@ -27,18 +27,20 @@ router.get('/genre/:genre', async (req, res) => {
     res.json(shows);
 });
 
-router.put('/rating/:id', validateRating, async (req, res) => {
-    const show = await Show.findByPk(req.params.id);
-    show.rating = req.body.rating;
-    await show.save();
-    res.json(show);
+router.put('/:id/cancel', async (req, res) => {
+    const id = req.params.id;
+    const show = await Show.findByPk(id);
+    const updateShow = await Show.update({status: "cancelled"}, {where: { id: id } });
+    const getUpdatedShow = await Show.findByPk(id);
+    res.json(getUpdatedShow);
 })
 
-router.put('/status/:id', validateStatus, async (req, res) => {
-    const show = await Show.findByPk(req.params.id);
-    show.status = req.body.status;
-    await show.save();
-    res.json(show);
+router.put('/:id/ongoing', async (req, res) => {
+    const id = req.params.id;
+    const show = await Show.findByPk(id);
+    const updateShow = await Show.update({status: "on-going"}, {where: { id: id } });
+    const getUpdatedShow = await Show.findByPk(id);
+    res.json(getUpdatedShow);
 })
 
 router.delete('/:id', async (req, res) => {
